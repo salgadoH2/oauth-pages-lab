@@ -13,8 +13,17 @@ import {
   buildAuthorizationUrl,
 } from "../../_shared/providers.js";
 
+function errorResponse(message, status = 400) {
+  return new Response(message, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
 export async function onRequestGet(context) {
-  const { request, env, params } = context;
+  const { env, params } = context;
 
   const providerName = params.provider;
 
@@ -22,29 +31,20 @@ export async function onRequestGet(context) {
     providerName !== "google" &&
     providerName !== "github"
   ) {
-    return new Response("Not Found", {
-      status: 404,
-    });
+    return errorResponse("Not Found", 404);
   }
 
   if (!env.DB) {
-    return new Response(
+    return errorResponse(
       "Database not configured",
-      {
-        status: 500,
-        headers: {
-          "Cache-Control": "no-store",
-        },
-      }
+      500
     );
   }
 
   const provider = getProvider(providerName);
 
   if (!provider) {
-    return new Response("Not Found", {
-      status: 404,
-    });
+    return errorResponse("Not Found", 404);
   }
 
   const transactionId = randomToken(32);
@@ -104,9 +104,7 @@ export async function onRequestGet(context) {
     headers: {
       Location: authorizationUrl,
       "Set-Cookie":
-        createTransactionCookie(
-          transactionId
-        ),
+        createTransactionCookie(transactionId),
       "Cache-Control": "no-store",
     },
   });
