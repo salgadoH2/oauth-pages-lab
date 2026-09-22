@@ -1,22 +1,22 @@
 import {
   randomToken,
   sha256Base64Url,
-} from "../../_shared/crypto.js";
+} from "../../../_shared/crypto.js";
 
 import {
   getCookie,
   clearTransactionCookie,
   createSessionCookie,
-} from "../../_shared/cookies.js";
+} from "../../../_shared/cookies.js";
 
 import {
   getProvider,
   getRedirectUri,
-} from "../../_shared/providers.js";
+} from "../../../_shared/providers.js";
 
 import {
   validateGoogleIdToken,
-} from "../../_shared/oidc.js";
+} from "../../../_shared/oidc.js";
 
 function errorResponse(message, status = 400) {
   return new Response(message, {
