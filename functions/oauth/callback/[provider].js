@@ -17,6 +17,15 @@ import {
   validateGoogleIdToken,
 } from "../../_shared/oidc.js";
 
+function errorResponse(message, status = 400) {
+  return new Response(message, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
 async function exchangeGoogleCode({
   code,
   codeVerifier,
@@ -37,7 +46,8 @@ async function exchangeGoogleCode({
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type":
+          "application/x-www-form-urlencoded",
       },
       body,
     }
@@ -72,7 +82,9 @@ async function exchangeGithubCode({
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type":
+          "application/x-www-form-urlencoded",
+        "User-Agent": "OAuth-Pages-Lab",
       },
       body,
     }
@@ -99,10 +111,12 @@ async function getGithubUser(accessToken) {
   const response = await fetch(
     "https://api.github.com/user",
     {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         Accept: "application/vnd.github+json",
         "X-GitHub-Api-Version": "2026-03-10",
+        "User-Agent": "OAuth-Pages-Lab",
       },
     }
   );
@@ -116,7 +130,9 @@ async function getGithubUser(accessToken) {
   const user = await response.json();
 
   if (!Number.isInteger(user.id)) {
-    throw new Error("Invalid GitHub user id");
+    throw new Error(
+      "Invalid GitHub user id"
+    );
   }
 
   return user;
@@ -141,6 +157,7 @@ async function revokeGithubAuthorization({
         Accept: "application/vnd.github+json",
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": "2026-03-10",
+        "User-Agent": "OAuth-Pages-Lab",
       },
       body: JSON.stringify({
         access_token: accessToken,
@@ -178,7 +195,8 @@ export async function onRequestGet(context) {
 
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const oauthError = url.searchParams.get("error");
+  const oauthError =
+    url.searchParams.get("error");
 
   if (oauthError) {
     return errorResponse(
@@ -205,12 +223,15 @@ export async function onRequestGet(context) {
   }
 
   const transactionIdHash =
-    await sha256Base64Url(transactionCookie);
+    await sha256Base64Url(
+      transactionCookie
+    );
 
   const stateHash =
     await sha256Base64Url(state);
 
-  const now = Math.floor(Date.now() / 1000);
+  const now =
+    Math.floor(Date.now() / 1000);
 
   const transaction = await env.DB.prepare(
     `SELECT
@@ -239,7 +260,9 @@ export async function onRequestGet(context) {
     );
   }
 
-  if (transaction.state_hash !== stateHash) {
+  if (
+    transaction.state_hash !== stateHash
+  ) {
     await env.DB.prepare(
       `DELETE FROM oauth_transactions
        WHERE id_hash = ?`
@@ -253,7 +276,6 @@ export async function onRequestGet(context) {
     );
   }
 
-  // Impede reutilização da transação.
   await env.DB.prepare(
     `DELETE FROM oauth_transactions
      WHERE id_hash = ?`
@@ -261,10 +283,11 @@ export async function onRequestGet(context) {
     .bind(transactionIdHash)
     .run();
 
-  const redirectUri = getRedirectUri(
-    providerName,
-    env
-  );
+  const redirectUri =
+    getRedirectUri(
+      providerName,
+      env
+    );
 
   let issuer;
   let subject;
@@ -298,11 +321,16 @@ export async function onRequestGet(context) {
           transaction.nonce
         );
 
-      issuer = "https://accounts.google.com";
+      issuer =
+        "https://accounts.google.com";
+
       subject = identity.subject;
       email = identity.email;
-      displayName = identity.displayName;
-    } else if (providerName === "github") {
+      displayName =
+        identity.displayName;
+    } else if (
+      providerName === "github"
+    ) {
       const tokenResponse =
         await exchangeGithubCode({
           code,
@@ -322,17 +350,20 @@ export async function onRequestGet(context) {
       }
 
       if (
-        typeof tokenResponse.token_type !== "string" ||
-        tokenResponse.token_type.toLowerCase() !== "bearer"
+        typeof tokenResponse.token_type !==
+          "string" ||
+        tokenResponse.token_type.toLowerCase() !==
+          "bearer"
       ) {
         throw new Error(
           "Invalid GitHub token type"
         );
       }
 
-      const user = await getGithubUser(
-        tokenResponse.access_token
-      );
+      const user =
+        await getGithubUser(
+          tokenResponse.access_token
+        );
 
       await revokeGithubAuthorization({
         accessToken:
@@ -355,31 +386,42 @@ export async function onRequestGet(context) {
             ? user.login
             : null;
     }
-    } catch (error) {
+  } catch (error) {
     const message =
       error instanceof Error
         ? error.message
         : "Unknown error";
 
-    console.error("OAUTH_ERROR", {
-      provider: providerName,
-      message,
-    });
+    console.error(
+      "OAUTH_ERROR",
+      {
+        provider: providerName,
+        message,
+      }
+    );
 
-    if (providerName === "github") {
+    if (
+      providerName === "github"
+    ) {
       return errorResponse(
         `GitHub authentication failed: ${message}`,
         401
       );
     }
 
-    return errorResponse("Authentication failed", 401);
+    return errorResponse(
+      "Authentication failed",
+      401
+    );
   }
 
-  const sessionToken = randomToken(32);
+  const sessionToken =
+    randomToken(32);
 
   const sessionIdHash =
-    await sha256Base64Url(sessionToken);
+    await sha256Base64Url(
+      sessionToken
+    );
 
   const createdAt =
     Math.floor(Date.now() / 1000);
@@ -411,7 +453,8 @@ export async function onRequestGet(context) {
     )
     .run();
 
-  const headers = new Headers();
+  const headers =
+    new Headers();
 
   headers.set(
     "Location",
@@ -425,7 +468,9 @@ export async function onRequestGet(context) {
 
   headers.append(
     "Set-Cookie",
-    createSessionCookie(sessionToken)
+    createSessionCookie(
+      sessionToken
+    )
   );
 
   headers.set(
