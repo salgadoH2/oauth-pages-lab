@@ -354,16 +354,17 @@ export async function onRequestGet(context) {
             : null;
     }
   } catch (error) {
-    console.error(
-      "OAuth authentication error:",
-      error instanceof Error ? error.message : "Unknown error"
-    );
+  const message =
+    error instanceof Error
+      ? error.message
+      : "Unknown error";
 
-    return errorResponse(
-      "Authentication failed",
-      401
-    );
+  if (providerName === "github") {
+    return errorResponse(`GitHub authentication failed: ${message}`, 401);
   }
+
+  return errorResponse("Authentication failed", 401);
+}
 
   const sessionToken = randomToken(32);
 
