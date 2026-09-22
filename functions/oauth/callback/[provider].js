@@ -10,7 +10,6 @@ import {
 } from "../../../_shared/cookies.js";
 
 import {
-  getProvider,
   getRedirectUri,
 } from "../../../_shared/providers.js";
 
@@ -47,15 +46,16 @@ async function exchangeGoogleCode({
     {
       method: "POST",
       headers: {
-        "Content-Type":
-          "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body,
     }
   );
 
   if (!response.ok) {
-    throw new Error("Google token exchange failed");
+    throw new Error(
+      `Google token exchange HTTP ${response.status}`
+    );
   }
 
   return response.json();
@@ -81,18 +81,27 @@ async function exchangeGithubCode({
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type":
-          "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body,
     }
   );
 
+  const data = await response.json();
+
   if (!response.ok) {
-    throw new Error("GitHub token exchange failed");
+    throw new Error(
+      `GitHub token exchange HTTP ${response.status}`
+    );
   }
 
-  return response.json();
+  if (data.error) {
+    throw new Error(
+      `GitHub token exchange: ${data.error}`
+    );
+  }
+
+  return data;
 }
 
 async function getGithubUser(accessToken) {
@@ -108,14 +117,14 @@ async function getGithubUser(accessToken) {
   );
 
   if (!response.ok) {
-    throw new Error("GitHub profile request failed");
+    throw new Error(
+      `GitHub profile HTTP ${response.status}`
+    );
   }
 
   const user = await response.json();
 
-  if (
-    !Number.isInteger(user.id)
-  ) {
+  if (!Number.isInteger(user.id)) {
     throw new Error("Invalid GitHub user id");
   }
 
@@ -149,7 +158,9 @@ async function revokeGithubAuthorization({
   );
 
   if (response.status !== 204) {
-    throw new Error("GitHub authorization revocation failed");
+    throw new Error(
+      `GitHub authorization revocation HTTP ${response.status}`
+    );
   }
 }
 
@@ -179,11 +190,15 @@ export async function onRequestGet(context) {
   const oauthError = url.searchParams.get("error");
 
   if (oauthError) {
-    return errorResponse("OAuth authorization failed");
+    return errorResponse(
+      "OAuth authorization failed"
+    );
   }
 
   if (!code || !state) {
-    return errorResponse("Missing code or state");
+    return errorResponse(
+      "Missing code or state"
+    );
   }
 
   const transactionCookie = getCookie(
@@ -208,16 +223,16 @@ export async function onRequestGet(context) {
 
   const transaction = await env.DB.prepare(
     `SELECT
-      id_hash,
-      provider,
-      state_hash,
-      nonce,
-      code_verifier,
-      expires_at
-    FROM oauth_transactions
-    WHERE id_hash = ?
-      AND provider = ?
-      AND expires_at > ?`
+       id_hash,
+       provider,
+       state_hash,
+       nonce,
+       code_verifier,
+       expires_at
+     FROM oauth_transactions
+     WHERE id_hash = ?
+       AND provider = ?
+       AND expires_at > ?`
   )
     .bind(
       transactionIdHash,
@@ -247,7 +262,7 @@ export async function onRequestGet(context) {
     );
   }
 
-  // A transaction must not be reusable.
+  // Impede reutilização da transação.
   await env.DB.prepare(
     `DELETE FROM oauth_transactions
      WHERE id_hash = ?`
@@ -296,9 +311,7 @@ export async function onRequestGet(context) {
       subject = identity.subject;
       email = identity.email;
       displayName = identity.displayName;
-    }
-
-    if (providerName === "github") {
+    } else if (providerName === "github") {
       const tokenResponse =
         await exchangeGithubCode({
           code,
@@ -319,18 +332,16 @@ export async function onRequestGet(context) {
 
       if (
         typeof tokenResponse.token_type !== "string" ||
-        tokenResponse.token_type.toLowerCase() !==
-          "bearer"
+        tokenResponse.token_type.toLowerCase() !== "bearer"
       ) {
         throw new Error(
           "Invalid GitHub token type"
         );
       }
 
-      const user =
-        await getGithubUser(
-          tokenResponse.access_token
-        );
+      const user = await getGithubUser(
+        tokenResponse.access_token
+      );
 
       await revokeGithubAuthorization({
         accessToken:
@@ -354,17 +365,23 @@ export async function onRequestGet(context) {
             : null;
     }
   } catch (error) {
-  const message =
-    error instanceof Error
-      ? error.message
-      : "Unknown error";
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unknown error";
 
-  if (providerName === "github") {
-    return errorResponse(`GitHub authentication failed: ${message}`, 401);
+    if (providerName === "github") {
+      return errorResponse(
+        `GitHub authentication failed: ${message}`,
+        401
+      );
+    }
+
+    return errorResponse(
+      "Authentication failed",
+      401
+    );
   }
-
-  return errorResponse("Authentication failed", 401);
-}
 
   const sessionToken = randomToken(32);
 
@@ -374,7 +391,8 @@ export async function onRequestGet(context) {
   const createdAt =
     Math.floor(Date.now() / 1000);
 
-  const expiresAt = createdAt + 28800;
+  const expiresAt =
+    createdAt + 28800;
 
   await env.DB.prepare(
     `INSERT INTO sessions
