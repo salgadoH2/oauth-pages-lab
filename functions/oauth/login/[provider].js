@@ -9,6 +9,7 @@ import {
 } from "../../_shared/cookies.js";
 
 import {
+  getProvider,
   buildAuthorizationUrl,
 } from "../../_shared/providers.js";
 
@@ -17,19 +18,25 @@ export async function onRequestGet(context) {
 
   const providerName = params.provider;
 
-  if (providerName !== "google" && providerName !== "github") {
+  if (
+    providerName !== "google" &&
+    providerName !== "github"
+  ) {
     return new Response("Not Found", {
       status: 404,
     });
   }
 
   if (!env.DB) {
-    return new Response("Database not configured", {
-      status: 500,
-      headers: {
-        "Cache-Control": "no-store",
-      },
-    });
+    return new Response(
+      "Database not configured",
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      }
+    );
   }
 
   const provider = getProvider(providerName);
@@ -96,9 +103,10 @@ export async function onRequestGet(context) {
     status: 302,
     headers: {
       Location: authorizationUrl,
-      "Set-Cookie": createTransactionCookie(
-        transactionId
-      ),
+      "Set-Cookie":
+        createTransactionCookie(
+          transactionId
+        ),
       "Cache-Control": "no-store",
     },
   });
