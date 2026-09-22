@@ -353,7 +353,12 @@ export async function onRequestGet(context) {
             ? user.login
             : null;
     }
-  } catch {
+  } catch (error) {
+    console.error(
+      "OAuth authentication error:",
+      error instanceof Error ? error.message : "Unknown error"
+    );
+
     return errorResponse(
       "Authentication failed",
       401
