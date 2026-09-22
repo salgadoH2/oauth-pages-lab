@@ -9,7 +9,6 @@ import {
 } from "../../_shared/cookies.js";
 
 import {
-  getProvider,
   buildAuthorizationUrl,
 } from "../../_shared/providers.js";
 
