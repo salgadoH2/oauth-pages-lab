@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laboratório de autenticação</title>
+    <title>New Eridu Terminal</title>
 
     <link rel="stylesheet" href="/styles.css">
 </head>
@@ -12,11 +12,46 @@
 <body>
 
     <main>
-        <h1>Laboratório de autenticação</h1>
+        <div class="zzz-banner">
+            <span class="zzz-banner-barra" aria-hidden="true"></span>
+            <h1>New Eridu Terminal</h1>
+            <span class="zzz-banner-barra" aria-hidden="true"></span>
+        </div>
 
         <p id="status">
             A sessão ainda não foi consultada.
         </p>
+
+        <section class="zzz-usuario" id="card-usuario" hidden>
+            <div class="zzz-usuario-topo">
+                <span class="zzz-usuario-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6v1H4z"/>
+                    </svg>
+                </span>
+                <div class="zzz-usuario-ident">
+                    <span class="zzz-usuario-nome" id="usuario-nome">—</span>
+                    <span class="zzz-usuario-email" id="usuario-email">—</span>
+                </div>
+                <span class="zzz-usuario-tag">Online</span>
+            </div>
+
+            <dl class="zzz-usuario-dados">
+                <div class="zzz-usuario-linha">
+                    <dt>E-mail</dt>
+                    <dd id="usuario-conta">—</dd>
+                </div>
+                <div class="zzz-usuario-linha">
+                    <dt>Provedor</dt>
+                    <dd id="usuario-provedor">—</dd>
+                </div>
+                <div class="zzz-usuario-linha">
+                    <dt>ID</dt>
+                    <dd id="usuario-id">—</dd>
+                </div>
+            </dl>
+        </section>
 
         <section>
             <h2>Login</h2>
@@ -54,17 +89,15 @@
             </p>
 
             <form method="post" action="/oauth/logout">
-                <div class="zzz-dock">
-                    <button class="zzz-dock-item" type="submit">
-                        <span class="zzz-dock-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-                                <path d="M12 3v8"/>
-                                <path d="M6.3 6.5a8 8 0 1 0 11.4 0"/>
-                            </svg>
-                        </span>
-                        <span class="zzz-dock-label">Sair</span>
-                    </button>
-                </div>
+                <button class="zzz-sair" type="submit">
+                    <span class="zzz-sair-icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                            <path d="M12 3v8"/>
+                            <path d="M6.3 6.5a8 8 0 1 0 11.4 0"/>
+                        </svg>
+                    </span>
+                    <span>Encerrar sessão</span>
+                </button>
             </form>
         </section>
     </main>

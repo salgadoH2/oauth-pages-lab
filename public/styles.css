@@ -33,28 +33,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 4rem 1.5rem 6rem;
+    padding: 3.5rem 1.5rem 5rem;
     font-family: "Archivo", "Arial Black", Arial, sans-serif;
-    background-color: var(--zzz-fundo);
+    background:
+        linear-gradient(180deg, rgba(10, 15, 21, 0.78) 0%, rgba(10, 15, 21, 0.6) 45%, rgba(10, 15, 21, 0.92) 100%),
+        url("/img/fundo-zzz.jpg") center top / cover no-repeat var(--zzz-fundo);
     color: var(--zzz-giz);
     overflow-x: hidden;
 }
 
-/* Brilhos suaves + textura de meio-tom no fundo escuro */
+/* Textura de meio-tom sutil sobre a arte */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     background-image:
-        radial-gradient(ellipse at 15% -10%, rgba(255, 212, 0, 0.07), transparent 55%),
-        radial-gradient(ellipse at 90% 110%, rgba(60, 90, 140, 0.16), transparent 55%),
-        radial-gradient(rgba(244, 242, 238, 0.05) 1px, transparent 1.6px);
-    background-size: auto, auto, 14px 14px;
+        radial-gradient(ellipse at 15% -10%, rgba(255, 212, 0, 0.05), transparent 55%),
+        radial-gradient(rgba(244, 242, 238, 0.04) 1px, transparent 1.6px);
+    background-size: auto, 14px 14px;
     pointer-events: none;
 }
 
-/* Fitas diagonais escuras nas laterais (substituem as amarelas) */
+/* Fitas diagonais escuras nas laterais */
 body::after {
     content: "";
     position: fixed;
@@ -64,59 +65,72 @@ body::after {
     right: 0;
     z-index: -1;
     pointer-events: none;
+    opacity: 0.85;
     background-image:
         repeating-linear-gradient(
             -45deg,
-            #2a3340 0 16px,
-            #10151c 16px 32px
+            rgba(42, 51, 64, 0.9) 0 16px,
+            transparent 16px 32px
         ),
         repeating-linear-gradient(
             -45deg,
-            #2a3340 0 16px,
-            #10151c 16px 32px
+            rgba(42, 51, 64, 0.9) 0 16px,
+            transparent 16px 32px
         );
     background-size: 12px 100%, 12px 100%;
     background-position: left, right;
     background-repeat: no-repeat;
 }
 
-/* Faixa quadriculada no rodapé, como no menu do jogo */
-main::after {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 26px;
-    z-index: 1;
-    pointer-events: none;
-    background:
-        repeating-conic-gradient(#f4f2ee 0% 25%, #10151c 0% 50%) 0 0 / 16px 16px;
-    opacity: 0.85;
-}
-
 main {
-    width: min(560px, 100%);
+    width: min(640px, 100%);
     position: relative;
     z-index: 1;
 }
 
+/* Banner do título: barras listradas dos lados, como "MAIN MENU SCREEN DETAILS" */
+.zzz-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    flex-wrap: nowrap;
+    margin-bottom: 1.75rem;
+}
+
+.zzz-banner-barra {
+    flex: 1 0 70px;
+    max-width: 220px;
+    height: 26px;
+    background: repeating-linear-gradient(
+        180deg,
+        #3a4350 0 4px,
+        #1a2029 4px 8px
+    );
+    border: 1px solid #3a4350;
+    opacity: 0.9;
+}
+
 h1 {
-    font-size: clamp(2rem, 6vw, 3.2rem);
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: clamp(1.3rem, 4.2vw, 2.6rem);
     font-weight: 900;
     font-style: italic;
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.01em;
-    margin: 0 0 1.75rem;
+    margin: 0;
     color: var(--zzz-giz);
-    text-shadow: 4px 4px 0 rgba(255, 212, 0, 0.9);
+    text-shadow: 3px 3px 0 rgba(255, 212, 0, 0.9);
     transform: skew(-4deg);
+    text-align: center;
+    overflow-wrap: break-word;
+    text-wrap: balance;
 }
 
 /* Etiqueta decorativa acima do título */
 h1::before {
-    content: "/* NEW ERIDU TERMINAL */";
     display: block;
     font-size: 0.75rem;
     font-weight: 700;
@@ -187,6 +201,170 @@ h2 {
 }
 
 /* ============================================================
+   Card do usuário logado: avatar + identidade + tag Online,
+   com a ficha de dados estilo "mission list" do jogo.
+   ============================================================ */
+.zzz-usuario {
+    border: var(--zzz-borda);
+    border-radius: 22px;
+    background: var(--zzz-painel);
+    box-shadow: var(--zzz-sombra);
+    padding: 1.4rem 1.6rem;
+    margin: 0 0 2rem;
+    overflow: hidden;
+}
+
+.zzz-usuario-topo {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px dashed #3a4350;
+}
+
+.zzz-usuario-avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border: 2px solid #39424f;
+    border-radius: 16px;
+    background: linear-gradient(180deg, var(--zzz-painel-claro), var(--zzz-painel));
+    color: #cfd6df;
+}
+
+.zzz-usuario-avatar svg {
+    width: 34px;
+    height: 34px;
+}
+
+.zzz-usuario-ident {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.zzz-usuario-nome {
+    font-size: 1.15rem;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--zzz-giz);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.zzz-usuario-email {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--zzz-cinza);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.zzz-usuario-tag {
+    flex: none;
+    margin-left: auto;
+    padding: 0.3rem 0.8rem;
+    border: 2px solid var(--zzz-amarelo);
+    border-radius: 999px;
+    background: rgba(255, 212, 0, 0.12);
+    color: var(--zzz-amarelo);
+    font-size: 0.7rem;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.zzz-usuario-dados {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 1.1rem 0 0;
+}
+
+.zzz-usuario-linha {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+}
+
+.zzz-usuario-linha dt {
+    flex: none;
+    width: 92px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--zzz-cinza);
+}
+
+.zzz-usuario-linha dd {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--zzz-giz);
+    word-break: break-all;
+}
+
+/* ============================================================
+   Botão vermelho "Encerrar sessão", herdando o estilo do
+   botão de voltar do menu do jogo.
+   ============================================================ */
+.zzz-sair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 0.95rem 1.4rem;
+    border: 2px solid #e33b3b;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(227, 59, 59, 0.16), rgba(227, 59, 59, 0.08)), var(--zzz-painel);
+    color: #ff6b6b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    box-shadow: var(--zzz-sombra);
+    transition: transform 130ms ease, box-shadow 130ms ease, background-color 130ms ease, color 130ms ease;
+}
+
+.zzz-sair-icone {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+}
+
+.zzz-sair-icone svg {
+    width: 100%;
+    height: 100%;
+}
+
+.zzz-sair:hover,
+.zzz-sair:focus-visible {
+    background: #e33b3b;
+    border-color: #ff8585;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 rgba(0, 0, 0, 0.8);
+}
+
+.zzz-sair:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================================
    Dock de ações estilo barra inferior do menu principal do ZZZ:
    tiles arredondados escuros com ícone branco e etiqueta embaixo.
    ============================================================ */
@@ -252,6 +430,8 @@ h2 {
     box-shadow: 0 3px 0 rgba(0, 0, 0, 0.8);
 }
 
+
+
 section p {
     margin: 0 0 0.9rem;
 }
@@ -286,6 +466,16 @@ button:focus-visible,
 a:focus-visible {
     outline: 3px dashed var(--zzz-amarelo);
     outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+    .zzz-banner-barra {
+        display: none;
+    }
+
+    .zzz-usuario-linha dt {
+        width: 76px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
