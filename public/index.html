@@ -15,7 +15,29 @@
         <p id="status">
             A sessão ainda não foi consultada.
         </p>
+
+        <section>
+            <h2>Login</h2>
+
+            <p>
+                <a href="/oauth/login/google">Entrar com Google</a>
+            </p>
+
+            <p>
+                <a href="/oauth/login/github">Entrar com GitHub</a>
+            </p>
+        </section>
+
+        <section>
+            <h2>Sessão</h2>
+
+            <form method="post" action="/oauth/logout">
+                <button type="submit">Sair</button>
+            </form>
+        </section>
     </main>
+
+    <script src="/app.js"></script>
 
 </body>
 </html>
