@@ -11,8 +11,8 @@
     --zzz-amarelo: #ffd400;
     --zzz-laranja: #ff7a00;
     --zzz-fundo: #10151c;
-    --zzz-painel: #1a2029;
-    --zzz-painel-claro: #232b36;
+    --zzz-painel: rgba(22, 28, 37, 0.7);
+    --zzz-painel-claro: rgba(40, 49, 61, 0.75);
     --zzz-giz: #f4f2ee;
     --zzz-cinza: #96a0ad;
     --zzz-borda: 2px solid var(--zzz-giz);
@@ -148,6 +148,8 @@ h1::before {
     padding: 0.7rem 1.1rem;
     border: var(--zzz-borda);
     background: var(--zzz-painel);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
     font-size: 0.95rem;
     font-weight: 600;
     border-radius: 999px;
@@ -159,6 +161,8 @@ section {
     border: var(--zzz-borda);
     border-radius: 22px;
     background: var(--zzz-painel);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
     box-shadow: var(--zzz-sombra);
     padding: 1.75rem 1.75rem 1.5rem;
     margin-bottom: 2rem;
@@ -208,6 +212,8 @@ h2 {
     border: var(--zzz-borda);
     border-radius: 22px;
     background: var(--zzz-painel);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
     box-shadow: var(--zzz-sombra);
     padding: 1.4rem 1.6rem;
     margin: 0 0 2rem;
@@ -328,6 +334,8 @@ h2 {
     border: 2px solid #e33b3b;
     border-radius: 16px;
     background: linear-gradient(180deg, rgba(227, 59, 59, 0.16), rgba(227, 59, 59, 0.08)), var(--zzz-painel);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
     color: #ff6b6b;
     font-size: 0.95rem;
     font-weight: 800;
@@ -386,6 +394,8 @@ h2 {
     border: var(--zzz-borda);
     border-radius: 16px;
     background: linear-gradient(180deg, var(--zzz-painel-claro), var(--zzz-painel));
+    backdrop-filter: blur(8px) saturate(1.15);
+    -webkit-backdrop-filter: blur(8px) saturate(1.15);
     color: var(--zzz-giz);
     text-decoration: none;
     box-shadow: var(--zzz-sombra);
