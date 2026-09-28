@@ -1,0 +1,295 @@
+/* ============================================================
+   Laboratório de autenticação — tema "Zenless Zone Zero"
+   Baseado no menu principal: fundo azul-marinho/grafite,
+   painéis arredondados branco-giz, ícones brancos,
+   amarelo apenas como destaque de seleção.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap");
+
+:root {
+    --zzz-amarelo: #ffd400;
+    --zzz-laranja: #ff7a00;
+    --zzz-fundo: #10151c;
+    --zzz-painel: #1a2029;
+    --zzz-painel-claro: #232b36;
+    --zzz-giz: #f4f2ee;
+    --zzz-cinza: #96a0ad;
+    --zzz-borda: 2px solid var(--zzz-giz);
+    --zzz-sombra: 6px 6px 0 rgba(0, 0, 0, 0.8);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 4rem 1.5rem 6rem;
+    font-family: "Archivo", "Arial Black", Arial, sans-serif;
+    background-color: var(--zzz-fundo);
+    color: var(--zzz-giz);
+    overflow-x: hidden;
+}
+
+/* Brilhos suaves + textura de meio-tom no fundo escuro */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        radial-gradient(ellipse at 15% -10%, rgba(255, 212, 0, 0.07), transparent 55%),
+        radial-gradient(ellipse at 90% 110%, rgba(60, 90, 140, 0.16), transparent 55%),
+        radial-gradient(rgba(244, 242, 238, 0.05) 1px, transparent 1.6px);
+    background-size: auto, auto, 14px 14px;
+    pointer-events: none;
+}
+
+/* Fitas diagonais escuras nas laterais (substituem as amarelas) */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            #2a3340 0 16px,
+            #10151c 16px 32px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            #2a3340 0 16px,
+            #10151c 16px 32px
+        );
+    background-size: 12px 100%, 12px 100%;
+    background-position: left, right;
+    background-repeat: no-repeat;
+}
+
+/* Faixa quadriculada no rodapé, como no menu do jogo */
+main::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 26px;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(#f4f2ee 0% 25%, #10151c 0% 50%) 0 0 / 16px 16px;
+    opacity: 0.85;
+}
+
+main {
+    width: min(560px, 100%);
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 1.75rem;
+    color: var(--zzz-giz);
+    text-shadow: 4px 4px 0 rgba(255, 212, 0, 0.9);
+    transform: skew(-4deg);
+}
+
+/* Etiqueta decorativa acima do título */
+h1::before {
+    content: "/* NEW ERIDU TERMINAL */";
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.3em;
+    color: var(--zzz-amarelo);
+    text-shadow: none;
+    transform: none;
+    margin-bottom: 0.75rem;
+}
+
+#status {
+    display: inline-block;
+    margin: 0 0 2rem;
+    padding: 0.7rem 1.1rem;
+    border: var(--zzz-borda);
+    background: var(--zzz-painel);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 999px;
+    box-shadow: var(--zzz-sombra);
+}
+
+section {
+    position: relative;
+    border: var(--zzz-borda);
+    border-radius: 22px;
+    background: var(--zzz-painel);
+    box-shadow: var(--zzz-sombra);
+    padding: 1.75rem 1.75rem 1.5rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+/* Canto com listras diagonais escuras */
+section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 56px;
+    height: 22px;
+    background: repeating-linear-gradient(
+        -45deg,
+        #37414f 0 9px,
+        transparent 9px 18px
+    );
+}
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 6px solid var(--zzz-amarelo);
+    transform: skew(-3deg);
+}
+
+.secao-descricao {
+    color: var(--zzz-cinza);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+    padding-left: calc(0.75rem + 6px);
+}
+
+/* ============================================================
+   Dock de ações estilo barra inferior do menu principal do ZZZ:
+   tiles arredondados escuros com ícone branco e etiqueta embaixo.
+   ============================================================ */
+.zzz-dock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-left: calc(0.75rem + 6px);
+}
+
+.zzz-dock-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 96px;
+    padding: 0.9rem 1rem 0.75rem;
+    border: var(--zzz-borda);
+    border-radius: 16px;
+    background: linear-gradient(180deg, var(--zzz-painel-claro), var(--zzz-painel));
+    color: var(--zzz-giz);
+    text-decoration: none;
+    box-shadow: var(--zzz-sombra);
+    transition: transform 130ms ease, box-shadow 130ms ease,
+        background-color 130ms ease, border-color 130ms ease, color 130ms ease;
+}
+
+.zzz-dock-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--zzz-giz);
+    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.6));
+}
+
+.zzz-dock-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.zzz-dock-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* Seleção estilo console: tile fica amarelo, como a opção ativa do jogo */
+.zzz-dock-item:hover,
+.zzz-dock-item:focus-visible {
+    background: var(--zzz-amarelo);
+    border-color: var(--zzz-preto, #0a0a0a);
+    color: #0a0a0a;
+    transform: translateY(-4px) skew(-2deg);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.8);
+}
+
+.zzz-dock-item:active {
+    transform: translateY(2px) skew(-2deg);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.8);
+}
+
+section p {
+    margin: 0 0 0.9rem;
+}
+
+section p:last-child {
+    margin-bottom: 0;
+}
+
+a {
+    color: var(--zzz-amarelo);
+    font-weight: 700;
+}
+
+form {
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+}
+
+button:hover {
+    background: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px dashed var(--zzz-amarelo);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zzz-dock-item {
+        transition: none;
+    }
+}
