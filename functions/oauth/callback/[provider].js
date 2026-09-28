@@ -122,6 +122,24 @@ async function getGithubUser(accessToken) {
   );
 
   if (!response.ok) {
+    console.error("GITHUB_USER_ERROR", {
+      status: response.status,
+      rateLimitRemaining:
+        response.headers.get("x-ratelimit-remaining"),
+      rateLimitLimit:
+        response.headers.get("x-ratelimit-limit"),
+      rateLimitReset:
+        response.headers.get("x-ratelimit-reset"),
+      retryAfter:
+        response.headers.get("retry-after"),
+      githubRequestId:
+        response.headers.get("x-github-request-id"),
+      wwwAuthenticate:
+        response.headers.get("www-authenticate"),
+      oauthScopes:
+        response.headers.get("x-oauth-scopes"),
+    });
+
     throw new Error(
       `GitHub profile HTTP ${response.status}`
     );
@@ -130,9 +148,7 @@ async function getGithubUser(accessToken) {
   const user = await response.json();
 
   if (!Number.isInteger(user.id)) {
-    throw new Error(
-      "Invalid GitHub user id"
-    );
+    throw new Error("Invalid GitHub user id");
   }
 
   return user;
