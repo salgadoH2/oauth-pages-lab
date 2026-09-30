@@ -1,6 +1,7 @@
 # 07 - Testes de falha executados
 
 Laboratorio: login em um site estatico no Cloudflare Pages
+Autoria: trabalho individual — João Vitor do Nascimento Martins, RA 2016108385
 Implantacao testada: `https://oauth-pages-lab-9cz.pages.dev` (producao, branch `main`)
 Data da execucao: 29/09/2026 (21:46 UTC-3 / 00:46 UTC)
 Metodo: requisicoes HTTP reais contra a implantacao de producao (DevTools/curl), sem registro
@@ -50,8 +51,8 @@ neste documento.
 - **Pedido enviado:** `GET /api/me` com o cookie `__Host-session` da sessao alterada.
 - **Resultado esperado:** `/api/me` responde 401.
 - **Resultado observado:** `HTTP/1.1 401 Unauthorized`, `Cache-Control: no-store`. O banco
-  pertence apenas ao laboratorio; a alteracao encerrou todas as sessoes da equipe no
-  ambiente de teste, como previsto no roteiro.
+  pertence apenas ao laboratorio; a alteracao encerrou as sessoes de teste no ambiente,
+  como previsto no roteiro.
 
 ## Caso 5: origem invalida na saida
 

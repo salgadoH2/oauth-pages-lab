@@ -2,6 +2,7 @@
 ===========================================================
 
 Laboratorio: login em um site estatico no Cloudflare Pages
+Autoria: trabalho individual — João Vitor do Nascimento Martins, RA 2016108385
 Registro: OAuth App (GitHub > Settings > Developer settings > OAuth apps)
 Device Flow: desativado
 
@@ -14,11 +15,10 @@ Authorization callback URL:
 https://oauth-pages-lab-9cz.pages.dev/oauth/callback/github
 
 Conferencias do ponto de verificacao 4:
-- A OAuth App foi registrada na conta correta da equipe.
-- A pagina inicial e a URL de retorno usam o dominio pages.dev da equipe, exatas.
+- A OAuth App foi registrada na conta correta do estudante.
+- A pagina inicial e a URL de retorno usam o dominio pages.dev, exatas.
 - Device Flow permanece desativado.
 - Nao foram solicitados os escopos repo, user:email nem offline_access.
-- Responsavel pela rotacao do Client Secret: [NOME-1] (preencher com o nome da
-  integrante designada pela dupla).
+- Responsavel pela rotacao do Client Secret: João Vitor do Nascimento Martins (RA 2016108385).
 - O Client Secret do GitHub nao consta neste arquivo: ele existe somente como
   segredo criptografado no painel do Cloudflare Pages (GITHUB_CLIENT_SECRET).

@@ -2,6 +2,7 @@
 =====================================
 
 Laboratorio: login em um site estatico no Cloudflare Pages
+Autoria: trabalho individual — João Vitor do Nascimento Martins, RA 2016108385
 Banco: oauth-sessions-EQUIPE, ligado ao projeto Pages pela variavel DB
 
 Consulta executada no console D1:

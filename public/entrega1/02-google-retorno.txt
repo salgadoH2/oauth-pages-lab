@@ -2,6 +2,7 @@
 =========================================
 
 Laboratorio: login em um site estatico no Cloudflare Pages
+Autoria: trabalho individual — João Vitor do Nascimento Martins, RA 2016108385
 Cliente OAuth: tipo Web application
 Console: Google Cloud Console > APIs e Servicos > Credenciais > IDs do cliente OAuth
 Escopos solicitados: openid email profile
