@@ -1,0 +1,20 @@
+02 - URL de retorno cadastrada no Google
+=========================================
+
+Laboratorio: login em um site estatico no Cloudflare Pages
+Cliente OAuth: tipo Web application
+Console: Google Cloud Console > APIs e Servicos > Credenciais > IDs do cliente OAuth
+Escopos solicitados: openid email profile
+
+URL de redirecionamento autorizada (unica, de producao):
+
+https://oauth-pages-lab-9cz.pages.dev/oauth/callback/google
+
+Conferencias do ponto de verificacao 3:
+- O cliente e do tipo Web.
+- Existe uma unica URL de retorno de producao.
+- A URL usa HTTPS e o dominio pages.dev da equipe, sem barra final e sem curinga.
+- Nao existe URL de retorno para localhost; todo o teste ocorre na implantacao HTTPS.
+- Apenas os escopos openid, email e profile serao solicitados.
+- O Client Secret do Google nao consta neste arquivo: ele existe somente como
+  segredo criptografado no painel do Cloudflare Pages (GOOGLE_CLIENT_SECRET).

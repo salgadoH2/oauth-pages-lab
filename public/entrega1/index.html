@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Entrega 1 — Evidências</title>
+
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        /* Estilos específicos do índice de evidências */
+        .ev-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin: 0 0 0 calc(0.75rem + 6px);
+        }
+
+        .ev-item {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.8rem 1rem;
+            border: var(--zzz-borda);
+            border-radius: 14px;
+            background: linear-gradient(180deg, var(--zzz-painel-claro), var(--zzz-painel));
+            backdrop-filter: blur(8px) saturate(1.15);
+            -webkit-backdrop-filter: blur(8px) saturate(1.15);
+            color: var(--zzz-giz);
+            text-decoration: none;
+            box-shadow: var(--zzz-sombra);
+            transition: transform 130ms ease, box-shadow 130ms ease,
+                background-color 130ms ease, color 130ms ease;
+        }
+
+        .ev-item:hover,
+        .ev-item:focus-visible {
+            background: var(--zzz-amarelo);
+            color: #0a0a0a;
+            transform: translateX(6px);
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .ev-item:active {
+            transform: translateX(2px);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .ev-num {
+            flex: none;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border: 2px solid currentColor;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        .ev-texto {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .ev-nome {
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: Consolas, "Courier New", monospace;
+            word-break: break-all;
+        }
+
+        .ev-desc {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--zzz-cinza);
+            font-style: italic;
+        }
+
+        .ev-item:hover .ev-desc,
+        .ev-item:focus-visible .ev-desc {
+            color: #0a0a0a;
+        }
+
+        .ev-voltar {
+            display: inline-block;
+            margin-top: 0.4rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ev-item {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="zzz-banner">
+            <span class="zzz-banner-barra" aria-hidden="true"></span>
+            <h1>Entrega 1 — Evidências</h1>
+            <span class="zzz-banner-barra" aria-hidden="true"></span>
+        </div>
+
+        <section>
+            <h2>Arquivos da entrega</h2>
+
+            <p class="secao-descricao">
+                Selecione uma evidência para abrir. Documentos saneados: nenhum segredo,
+                token, cookie ou valor transitório consta nos arquivos.
+            </p>
+
+            <nav class="ev-lista" aria-label="Evidências da entrega">
+                <a class="ev-item" href="/entrega1/01-pages-configuracao.pdf">
+                    <span class="ev-num" aria-hidden="true">01</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">01-pages-configuracao.pdf</span>
+                        <span class="ev-desc">Configuração do projeto no Cloudflare Pages</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/02-google-retorno.txt">
+                    <span class="ev-num" aria-hidden="true">02</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">02-google-retorno.txt</span>
+                        <span class="ev-desc">URL de retorno cadastrada no Google</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/03-github-retorno.txt">
+                    <span class="ev-num" aria-hidden="true">03</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">03-github-retorno.txt</span>
+                        <span class="ev-desc">Página inicial e URL de retorno no GitHub</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/04-d1-esquema.txt">
+                    <span class="ev-num" aria-hidden="true">04</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">04-d1-esquema.txt</span>
+                        <span class="ev-desc">Esquema consultado no console D1</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/05-inicio-login-google.pdf">
+                    <span class="ev-num" aria-hidden="true">05</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">05-inicio-login-google.pdf</span>
+                        <span class="ev-desc">Cabeçalhos saneados do início do login com Google</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/06-inicio-login-github.pdf">
+                    <span class="ev-num" aria-hidden="true">06</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">06-inicio-login-github.pdf</span>
+                        <span class="ev-desc">Cabeçalhos saneados do início do login com GitHub</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/07-testes-falha.md">
+                    <span class="ev-num" aria-hidden="true">07</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">07-testes-falha.md</span>
+                        <span class="ev-desc">Casos de falha executados e resultados</span>
+                    </span>
+                </a>
+
+                <a class="ev-item" href="/entrega1/08-aceitacao.md">
+                    <span class="ev-num" aria-hidden="true">08</span>
+                    <span class="ev-texto">
+                        <span class="ev-nome">08-aceitacao.md</span>
+                        <span class="ev-desc">Lista final de aceitação assinada pela dupla</span>
+                    </span>
+                </a>
+            </nav>
+        </section>
+
+        <section>
+            <h2>Voltar</h2>
+
+            <p class="secao-descricao">
+                Retorne ao terminal principal.
+            </p>
+
+            <a class="ev-voltar" href="/">&larr; New Eridu Terminal</a>
+        </section>
+    </main>
+
+</body>
+</html>
