@@ -41,7 +41,8 @@ jobs:
               echo ""
             done
           } > resumo-migracoes.txt
-
+      - name: Instala o Copilot CLI
+        run: npm install -g @github/copilot
       - id: resumo
         uses: actions/ai-inference@v3
         env:
