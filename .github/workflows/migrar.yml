@@ -1,0 +1,59 @@
+name: migrar
+
+# Tarefa 4 — aplicacao das migracoes D1 depois do merge.
+# Um PR aceito vira um push na main; este workflow so roda quando esse push
+# altera algo dentro de migrations/ (filtro paths).
+on:
+  push:
+    branches: [main]
+    paths: ['migrations/**']
+
+# Permissao minima: ler o codigo. A escrita no D1 usa o segredo da Cloudflare.
+permissions:
+  contents: read
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Aplica as migracoes no D1 remoto
+        run: npx --yes wrangler d1 migrations apply oauth-sessions-joao --remote --yes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # Bonus (0,5): resumo das migracoes gerado por IA no $GITHUB_STEP_SUMMARY.
+      - name: Monta o prompt do resumo
+        run: |
+          {
+            echo "Resuma em portugues, em ate 5 linhas, as migracoes SQL deste repositorio"
+            echo "que acabam de ser aplicadas em um banco D1. Nao invente nada."
+            echo ""
+            for f in migrations/*.sql; do
+              echo "Arquivo: $f"
+              cat "$f"
+              echo ""
+            done
+          } > resumo-migracoes.txt
+
+      - id: resumo
+        uses: actions/ai-inference@v3
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_PAT }}
+        with:
+          prompt-file: resumo-migracoes.txt
+          system-prompt: Voce e um revisor de codigo objetivo.
+
+      - name: Escreve o resumo no Step Summary
+        run: |
+          {
+            echo "## Migracoes aplicadas no D1 (resumo gerado por IA)"
+            echo ""
+            cat "${{ steps.resumo.outputs.response-file }}"
+          } >> "$GITHUB_STEP_SUMMARY"
