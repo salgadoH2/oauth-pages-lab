@@ -1,0 +1,52 @@
+name: revisao-ia
+
+# Tarefa 3 — revisao de PR por IA.
+# Dispara quando o PR e aberto (opened) ou atualizado (synchronize).
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+# Permissoes minimas: ler o codigo e escrever apenas o comentario no PR.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      # O runner do GitHub nao traz o Copilot CLI; a acao@v3 sai por ele.
+      - name: Instala o Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Monta o prompt
+        run: |
+          {
+            echo "Revise o diff de um site com Cloudflare Pages Functions e D1."
+            echo "Aponte, em portugues e em ate 10 itens: segredos expostos,"
+            echo "SQL montado por concatenacao em vez de prepare().bind(), e erros de logica."
+            echo '```diff'
+            git diff origin/${{ github.base_ref }}...HEAD | head -c 20000
+            echo '```'
+          } > prompt.txt
+
+      - id: ia
+        uses: actions/ai-inference@v3
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_PAT }}
+        with:
+          prompt-file: prompt.txt
+          system-prompt: Voce e um revisor de codigo objetivo.
+
+      - name: Comenta no PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment ${{ github.event.pull_request.number }} --body-file "${{ steps.ia.outputs.response-file }}"
