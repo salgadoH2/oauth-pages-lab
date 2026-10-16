@@ -1,0 +1,41 @@
+name: ci
+
+# Tarefa 1 — CI a cada commit.
+# Roda em todo push (qualquer ramificacao) e em todo pull_request para a main.
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+# Permissao minima: este job apenas le o codigo.
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Procura segredos versionados
+        # O proprio ci.yml contem o literal GOCSPX- (e o resto da expressao), entao
+        # ele e excluido da varredura: um scanner nao escaneia a si mesmo.
+        run: |
+          if git grep -nE "GOCSPX-|client_secret *= *['\"][^'\"]+" -- . \
+              ':(exclude)**/*.md' ':(exclude).github/workflows/ci.yml'; then
+            echo "::error::Possivel segredo no repositorio"
+            exit 1
+          fi
+
+      - name: Aplica as migracoes D1 em um SQLite local
+        run: |
+          set -euo pipefail
+          rm -f teste.db
+          for f in migrations/*.sql; do
+            echo "Aplicando $f"
+            sqlite3 teste.db < "$f"
+          done
+          sqlite3 teste.db ".tables"
+
+      - name: Valida HTML
+        run: npx --yes htmlhint "**/*.html"

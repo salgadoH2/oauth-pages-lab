@@ -1,0 +1,6 @@
+# Marcador do ambiente Freebuff, nao faz parte do site.
+.freebuff/
+
+# Artefatos de teste locais do CI (o sqlite3 roda no runner, nao versiona nada).
+teste.db
+node_modules/

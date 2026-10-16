@@ -1,0 +1,11 @@
+name = "oauth-pages-lab"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "public"
+
+# Binding do banco D1 usado pelas Pages Functions (env.DB).
+# database_id preenchido a partir do painel Cloudflare > Workers & Pages >
+# oauth-pages-lab > D1, ou de `wrangler d1 list`.
+[[d1_databases]]
+binding = "DB"
+database_name = "oauth-sessions"
+database_id = "00000000-0000-0000-0000-000000000000"
